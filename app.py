@@ -47,13 +47,18 @@ with st.sidebar:
 # Middle section of sidebar
 st.sidebar.markdown("---")  # horizontal line
 # Reasons for this site
-with st.sidebar.expander("More Info ℹ️"):
+with st.sidebar.expander("More about this app ℹ️"):
     st.write(
-        "This content is hidden until you click.",
+        "Scientific dashboard",
         styles={""}
         )
 # My info
-st.sidebar.write("💡 Tip: You can add instructions, links, or info here.")
+with st.sidebar.expander("More about me 👤"):
+    st.write(
+        "I am ...",
+        styles={""}
+        )
+st.sidebar.write("")
 st.sidebar.write(
     ""
 )
