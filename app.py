@@ -64,7 +64,7 @@ st.sidebar.write(
 #     st.sidebar.markdown(
 #         'https://www.linkedin.com/in/debbieszewingto/', unsafe_allow_html=True
 #     )
-st.sidebar.link_button("Connect with Debbie! ☕️", 
+st.sidebar.link_button("Connect with Debbie ☕️", 
                        "https://www.linkedin.com/in/debbieszewingto/")
 
 st.sidebar.markdown("---")  # horizontal line
