@@ -36,7 +36,7 @@ with st.sidebar:
         sidebar_items,                              # Menu items
         icons=["house", "graph-up", "activity", "file-text", "book"],   # Matching icons
         # menu_icon="cast",                         # Icon for the menu title
-        default_index=1,                            # Which tab opens first
+        default_index=2,                            # Which tab opens first
         # orientation='horizontal'
         styles={
             "icon":{"color": "#00ffdf", "font-size": "25px"},
@@ -67,8 +67,20 @@ with st.sidebar.expander("Something about me 👤"):
 st.sidebar.link_button("Connect with Debbie ☕️", 
                        "https://www.linkedin.com/in/debbieszewingto/")
 # email
-if st.sidebar.button("Email Debbie  📧"):
-   st.markdown('<a href="mailto:toszewingdebbie@gmail.com">Click here if nothing opens</a>', unsafe_allow_html=True)
+# if st.sidebar.button("Email Debbie  📧"):
+#    st.markdown('<a href="mailto:toszewingdebbie@gmail.com">Click here if nothing opens</a>', unsafe_allow_html=True)
+
+st.sidebar.markdown("""
+    <a href="mailto:toszewingdebbie@gmail.com">
+        <button style="padding:7.5px 35px; 
+                       font-size:16px; 
+                       cursor:pointer; 
+                       background-color:#FFBF00;
+                       color:black;
+                       border:none;
+                       ">Email Debbie 📧</button>
+    </a>
+""", unsafe_allow_html=True)
 
 st.sidebar.markdown("---")  # horizontal line
 # st.sidebar.selectbox("Go to", ["Home", "Analysis", "Settings"])
