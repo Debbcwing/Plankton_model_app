@@ -112,7 +112,7 @@ if selected == sidebar_items[1]:
 
     with tab3:
         st.write(
-            ""
+            "X"
         )
 
 
