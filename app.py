@@ -56,13 +56,21 @@ with st.sidebar.expander("More about this app ℹ️"):
         )
 # My info
 with st.sidebar.expander("Something about me 👤"):
-    st.write(
-        "I am a model enthusiast who did a PhD in modeling lake phytoplankton communities "
-        "- the tiny, drifting organism that is very important in ecosystems. While the model "
-        "itself is complex, the output can be distilled into insightful patterns by reducing "
-        "dimensionality. I was fascinated not just by the model but also the stories the data told.",
-        styles={""}
-        )
+        st.write(
+        """
+        - A model enthusiast
+        - A data player
+        - Modeling plankton
+        """,
+        styles={""})
+        st.write(
+            "**I am fascinated not just by models but also the stories data tell.**",
+        styles={""})
+        st.write(
+            "While models themselves can be complex, their output can be distilled into insightful patterns!",
+        styles={""})
+
+
 # connect
 st.sidebar.link_button("Connect with Debbie ☕️", 
                        "https://www.linkedin.com/in/debbieszewingto/")
