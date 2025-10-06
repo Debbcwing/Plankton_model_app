@@ -1,6 +1,5 @@
 ## Exclude data from source control by default ##
 /data/
-prompt_template.txt
 RAG_CONFIGURATION.md
 CLAUDE_MEMORY.md
 chroma_db/
