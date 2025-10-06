@@ -2,6 +2,7 @@
 /data/
 prompt_template.txt
 RAG_CONFIGURATION.md
+CLAUDE_MEMORY.md
 chroma_db/
 
 ## Helper scripts (optional) ##
