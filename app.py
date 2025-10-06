@@ -31,10 +31,13 @@ st.set_page_config(
     }
 )
 
-# Hide hamburger menu completely
+# Hide hamburger menu and GitHub icon
 st.markdown("""
     <style>
     #MainMenu {visibility: hidden;}
+    header {visibility: hidden;}
+    footer {visibility: hidden;}
+    .stDeployButton {display: none;}
     </style>
     """, unsafe_allow_html=True)
 
