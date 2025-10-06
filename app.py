@@ -18,11 +18,25 @@ from rag_setup import RAGSystem
 from langchain_anthropic import ChatAnthropic
 from langchain.chains import RetrievalQA
 
-# --- Set page config ---
+# --- Set page config (must be first Streamlit command) ---
 st.set_page_config(
-    layout="wide",  # <-- sets wide mode
-    initial_sidebar_state="expanded"
+    page_title="Plankton Model App",
+    page_icon="🌊",
+    layout="wide",  # Wide layout
+    initial_sidebar_state="expanded",
+    menu_items={
+        'Get Help': None,
+        'Report a bug': None,
+        'About': "# Plankton Model App\nExplore PhD research on plankton ecology and lake ecosystems."
+    }
 )
+
+# Hide hamburger menu completely
+st.markdown("""
+    <style>
+    #MainMenu {visibility: hidden;}
+    </style>
+    """, unsafe_allow_html=True)
 
 # Sidebar menu
 sidebar_items = ["Home", "Data", "Model", "Manuscripts", "Planktoomics"]
