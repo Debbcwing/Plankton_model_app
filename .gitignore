@@ -3,6 +3,7 @@
 RAG_CONFIGURATION.md
 CLAUDE_MEMORY.md
 chroma_db/
+_README.md
 
 ## Helper scripts (optional) ##
 rebuild_rag.py
