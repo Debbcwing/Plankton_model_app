@@ -119,7 +119,7 @@ st.sidebar.caption("This PhD project received funding from the German Research F
 # ---------------------- HOME PAGE ----------------------
 if selected == sidebar_items[0]:
     # Lazy import RAG libraries (only when Home tab is accessed)
-    from rag_setup import RAGSystem
+    from config.rag_setup import RAGSystem
     from langchain_anthropic import ChatAnthropic
     from langchain.chains import RetrievalQA
 
