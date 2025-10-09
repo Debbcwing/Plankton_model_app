@@ -13,8 +13,10 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-# RAG system imports moved to Home tab for lazy loading
-# (Only loads when user visits Home tab)
+# RAG system imports
+from rag_setup import RAGSystem
+from langchain_anthropic import ChatAnthropic
+from langchain.chains import RetrievalQA
 
 # --- Set page config (must be first Streamlit command) ---
 st.set_page_config(
@@ -123,11 +125,6 @@ st.sidebar.caption("This PhD project received funding from the German Research F
 if selected == sidebar_items[0]:
     st.title("Hello👋🏼  Ask me anything about my PhD research on plankton modeling!")
 
-    # Lazy import RAG libraries (only when Home tab is accessed)
-    from rag_setup import RAGSystem
-    from langchain_anthropic import ChatAnthropic
-    from langchain.chains import RetrievalQA
-
     # Initialize RAG system
     @st.cache_resource(show_spinner=False)
     def load_rag_system():
@@ -187,17 +184,14 @@ if selected == sidebar_items[0]:
 
             # Show example Q&A pairs
             with st.expander("💡  Some common questions and answers"):
-                # st.markdown("### Example 1")
                 st.markdown("**Q: What is the main focus of your PhD research?**")
                 st.markdown("**A:** My research is all about understanding how tiny organisms called plankton grow and interact in lakes! I built computer models to simulate how different types of phytoplankton (the plant-like plankton) compete for nutrients and respond to changes in their environment. Think of it like creating a virtual aquarium to study how different factors—like temperature, light, and nutrient availability—affect which species thrive and which ones struggle.")
 
                 st.markdown("---")
-                # st.markdown("### Example 2")
                 st.markdown("**Q: How does your model handle nutrient dynamics?**")
                 st.markdown("**A:** Great question! The model tracks how nutrients like nitrogen and phosphorus move through the water. Imagine nutrients as food for plankton—they get taken up by phytoplankton, then passed along when zooplankton eat the phytoplankton. The model also simulates how nutrients get recycled back into the water when organisms die or produce waste. It's like tracking a nutrient cycle in a mini ecosystem!")
 
                 st.markdown("---")
-                # st.markdown("### Example 3")
                 st.markdown("**Q: What are the key findings from your simulations?**")
                 st.markdown("**A:** One cool finding is that size really matters! Larger phytoplankton tend to dominate in nutrient-rich waters, while smaller ones do better when nutrients are scarce. I also found that grazing pressure from zooplankton can completely flip which phytoplankton species wins the competition. It's fascinating how these tiny interactions shape entire lake ecosystems!")
 
@@ -460,8 +454,8 @@ if selected == sidebar_items[4]:
     st.header("🌊 Planktoomics: Stories of Phytoplankton")
     st.write("Dive into the fascinating world of phytoplankton through visual storytelling!")
 
-    # Introduction image (optimized WebP format - 95% smaller!)
-    st.image("Planktoomics/StoryIntro.webp", use_container_width=True)
+    # Introduction image
+    st.image("StoryIntro.png", use_container_width=True)
 
     st.markdown("---")
 
@@ -471,7 +465,7 @@ if selected == sidebar_items[4]:
         Discover where phytoplankton live and thrive! From sun-drenched surface waters to the mysterious depths below,
         phytoplankton inhabit diverse aquatic environments. Explore how light, nutrients, and mixing shape their habitat.
         """)
-        st.image("Planktoomics/Phyto_1.webp", use_container_width=True)
+        st.image("Phyto_1.png", use_container_width=True)
 
     with st.expander("❄️ Algae bloom under lake ice", expanded=False):
         st.markdown("""
@@ -479,7 +473,7 @@ if selected == sidebar_items[4]:
         challenging our understanding of aquatic ecosystems. Learn how these tiny organisms survive and thrive in
         seemingly harsh winter conditions.
         """)
-        st.image("Planktoomics/Phyto_2.webp", use_container_width=True)
+        st.image("Phyto_2.png", use_container_width=True)
 
     with st.expander("☀️ The life of the aquatic photosynthesis machine", expanded=False):
         st.markdown("""
@@ -487,7 +481,7 @@ if selected == sidebar_items[4]:
         through photosynthesis. Follow the amazing journey of these microscopic powerhouses as they fuel aquatic
         food webs and produce half of Earth's oxygen.
         """)
-        st.image("Planktoomics/Phyto_3.webp", use_container_width=True)
+        st.image("Phyto_3.png", use_container_width=True)
 
     st.markdown("---")
     st.info("💡 **Did you know?** Phytoplankton produce approximately 50% of the oxygen we breathe, rivaling all terrestrial plants combined!")
