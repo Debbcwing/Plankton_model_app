@@ -37,7 +37,7 @@ st.markdown("""
     """, unsafe_allow_html=True)
 
 # Sidebar menu
-sidebar_items = ["Home", "Data", "Model", "Manuscripts", "Planktoomics"]
+sidebar_items = ["Home", "Manuscripts", "Data", "Model", "Planktoomics"]
 
 with st.sidebar:
     selected = option_menu(
@@ -255,70 +255,8 @@ if selected == sidebar_items[0]:
             )
 
 
-
-# ---------------------- Data ----------------------
-if selected == sidebar_items[1]:
-    st.header("Data 📊📈")
-    # st.subheader("Overview")
-    st.write(
-        "Have a look at the real lake data collected between years 2019 and 2022 by the state-of-art "
-        "underwater microscope placed at Greifensee, Switzerland🇨🇭"
-    )
-    tab_names_data = ["Physical", "Chemical", "Biological"]
-    tab1, tab2, tab3 = st.tabs(tab_names_data)
-
-    with tab1:
-        st.write(
-            ""
-        )
-
-    with tab2:
-        st.write(
-            ""
-        )
-
-    with tab3:
-        st.write(
-            "X"
-        )
-
-
-
-# ---------------------- Model ----------------------
-if selected == sidebar_items[2]:
-    st.header("Model")
-    # st.subheader("Overview")
-    st.write(
-        ""
-    )
-
-    tab_names_model = ["Concepts", "Baseline", "Reaction", "Forecast"]
-    tab1, tab2, tab3, tab4 = st.tabs(tab_names_model)
-
-    with tab1:
-        st.subheader(
-            "A simplified lake ecosystem"
-        )
-        # @st.cache_data
-        st.image("lake-fig.webp")
-    
-    with tab2:
-        st.write(
-            ""
-        )
-
-    with tab3:
-        st.write(
-            ""
-        )
-    
-    with tab4:
-        st.write(
-            ""
-        )    
-
 # ---------------------- Manuscript ----------------------
-if selected == sidebar_items[3]:
+if selected == sidebar_items[1]:
     st.header("📚 Publications")
     st.write("Explore my peer-reviewed research on phytoplankton size structure and community dynamics in lake ecosystems.")
 
@@ -446,6 +384,69 @@ if selected == sidebar_items[3]:
         This work builds on the previous two manuscripts to explore how climate change and environmental
         stressors might affect phytoplankton community structure in future lake ecosystems.
         """)
+
+
+# ---------------------- Data ----------------------
+if selected == sidebar_items[2]:
+    st.header("Data 📊📈")
+    # st.subheader("Overview")
+    st.write(
+        "Have a look at the real lake data collected between years 2019 and 2022 by the state-of-art "
+        "underwater microscope placed at Greifensee, Switzerland🇨🇭"
+    )
+    tab_names_data = ["Physical", "Chemical", "Biological"]
+    tab1, tab2, tab3 = st.tabs(tab_names_data)
+
+    with tab1:
+        st.write(
+            ""
+        )
+
+    with tab2:
+        st.write(
+            ""
+        )
+
+    with tab3:
+        st.write(
+            "X"
+        )
+
+
+
+# ---------------------- Model ----------------------
+if selected == sidebar_items[3]:
+    st.header("Model")
+    # st.subheader("Overview")
+    st.write(
+        ""
+    )
+
+    tab_names_model = ["Concepts", "Baseline", "Reaction", "Forecast"]
+    tab1, tab2, tab3, tab4 = st.tabs(tab_names_model)
+
+    with tab1:
+        st.subheader(
+            "A simplified lake ecosystem"
+        )
+        # @st.cache_data
+        st.image("lake-fig.webp")
+    
+    with tab2:
+        st.write(
+            ""
+        )
+
+    with tab3:
+        st.write(
+            ""
+        )
+    
+    with tab4:
+        st.write(
+            ""
+        )    
+
 
 
 
