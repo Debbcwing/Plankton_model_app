@@ -13,11 +13,6 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-# RAG system imports
-from rag_setup import RAGSystem
-from langchain_anthropic import ChatAnthropic
-from langchain.chains import RetrievalQA
-
 # --- Set page config (must be first Streamlit command) ---
 st.set_page_config(
     page_title="Plankton Model App",
@@ -123,6 +118,11 @@ st.sidebar.caption("This PhD project received funding from the German Research F
 
 # ---------------------- HOME PAGE ----------------------
 if selected == sidebar_items[0]:
+    # Lazy import RAG libraries (only when Home tab is accessed)
+    from rag_setup import RAGSystem
+    from langchain_anthropic import ChatAnthropic
+    from langchain.chains import RetrievalQA
+
     st.title("Hello👋🏼  Ask me anything about my PhD research on plankton modeling!")
 
     # Initialize RAG system
@@ -455,7 +455,7 @@ if selected == sidebar_items[4]:
     st.write("Dive into the fascinating world of phytoplankton through visual storytelling!")
 
     # Introduction image
-    st.image("StoryIntro.png", use_container_width=True)
+    st.image("Planktoomics/StoryIntro.webp", use_container_width=True)
 
     st.markdown("---")
 
@@ -465,7 +465,7 @@ if selected == sidebar_items[4]:
         Discover where phytoplankton live and thrive! From sun-drenched surface waters to the mysterious depths below,
         phytoplankton inhabit diverse aquatic environments. Explore how light, nutrients, and mixing shape their habitat.
         """)
-        st.image("Phyto_1.png", use_container_width=True)
+        st.image("Planktoomics/Phyto_1.webp", use_container_width=True)
 
     with st.expander("❄️ Algae bloom under lake ice", expanded=False):
         st.markdown("""
@@ -473,7 +473,7 @@ if selected == sidebar_items[4]:
         challenging our understanding of aquatic ecosystems. Learn how these tiny organisms survive and thrive in
         seemingly harsh winter conditions.
         """)
-        st.image("Phyto_2.png", use_container_width=True)
+        st.image("Planktoomics/Phyto_2.webp", use_container_width=True)
 
     with st.expander("☀️ The life of the aquatic photosynthesis machine", expanded=False):
         st.markdown("""
@@ -481,7 +481,7 @@ if selected == sidebar_items[4]:
         through photosynthesis. Follow the amazing journey of these microscopic powerhouses as they fuel aquatic
         food webs and produce half of Earth's oxygen.
         """)
-        st.image("Phyto_3.png", use_container_width=True)
+        st.image("Planktoomics/Phyto_3.webp", use_container_width=True)
 
     st.markdown("---")
     st.info("💡 **Did you know?** Phytoplankton produce approximately 50% of the oxygen we breathe, rivaling all terrestrial plants combined!")
