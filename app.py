@@ -300,7 +300,7 @@ if selected == sidebar_items[2]:
             "A simplified lake ecosystem"
         )
         # @st.cache_data
-        st.image("Fig1.1_v2.png")
+        st.image("lake-fig.webp")
     
     with tab2:
         st.write(
