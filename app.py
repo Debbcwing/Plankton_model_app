@@ -163,7 +163,7 @@ if selected == sidebar_items[0]:
             # Load custom prompt template from file
             from langchain.prompts import PromptTemplate
 
-            with open("prompt_template.txt", "r") as f:
+            with open("config/prompt_template.txt", "r") as f:
                 prompt_template = f.read()
 
             PROMPT = PromptTemplate(
