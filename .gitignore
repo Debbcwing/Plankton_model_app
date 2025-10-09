@@ -3,6 +3,7 @@
 prompt_template.txt
 RAG_CONFIGURATION.md
 CLAUDE_MEMORY.md
+_RAG-explained.md
 chroma_db/
 _README.md
 
