@@ -45,7 +45,7 @@ with st.sidebar:
         sidebar_items,                              # Menu items
         icons=["house", "graph-up", "activity", "file-text", "book"],   # Matching icons
         # menu_icon="cast",                         # Icon for the menu title
-        default_index=0,                            # Which tab opens first
+        default_index=1,                            # Which tab opens first
         # orientation='horizontal'
         styles={
             "icon":{"color": "#00ffdf", "font-size": "25px"},
@@ -420,7 +420,7 @@ if selected == sidebar_items[2]:
                 name='Temperature',
                 line=dict(color='#FF6B6B', width=2),
                 yaxis='y1',
-                hovertemplate='<b>Temperature</b><br>%{y:.1f}°C<br>%{x|%Y-%m-%d}<extra></extra>'
+                hovertemplate='<b>Temperature</b><br>%{y:.1f}°C<br><extra></extra>'
             ))
 
             # Add solar radiation trace (right y-axis)
@@ -430,7 +430,7 @@ if selected == sidebar_items[2]:
                 name='Solar Radiation',
                 line=dict(color='#FFA500', width=2),
                 yaxis='y2',
-                hovertemplate='<b>Solar Radiation</b><br>%{y:.1f} W/m²<br>%{x|%Y-%m-%d}<extra></extra>'
+                hovertemplate='<b>Solar Radiation</b><br>%{y:.1f} W/m²<br><extra></extra>'
             ))
 
             # Update layout with dual axes and range slider
