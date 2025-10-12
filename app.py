@@ -433,19 +433,10 @@ if selected == sidebar_items[2]:
                 hovertemplate='<b>Solar Radiation</b><br>%{y:.1f} W/m²<br>%{x|%Y-%m-%d}<extra></extra>'
             ))
 
-            # Update layout with dual axes and range selector
+            # Update layout with dual axes and range slider
             fig.update_layout(
                 xaxis=dict(
                     title='Date',
-                    rangeselector=dict(
-                        buttons=[
-                            dict(count=1, label='1m', step='month', stepmode='backward'),
-                            dict(count=3, label='3m', step='month', stepmode='backward'),
-                            dict(count=6, label='6m', step='month', stepmode='backward'),
-                            dict(count=1, label='1y', step='year', stepmode='backward'),
-                            dict(step='all', label='All')
-                        ]
-                    ),
                     rangeslider=dict(visible=True),
                     type='date'
                 ),
