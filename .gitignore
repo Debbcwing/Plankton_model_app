@@ -1,5 +1,4 @@
 ## Exclude data from source control by default ##
-/data/
 RAG_CONFIGURATION.md
 CLAUDE_MEMORY.md
 _RAG-explained.md
