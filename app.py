@@ -276,9 +276,9 @@ if selected == sidebar_items[1]:
             st.subheader("Grazing strategies determine the size composition of phytoplankton in eutrophic lakes")
             st.markdown("**Authors:** Sze-Wing To, "
                         "[Esteban Acevedo-Trejos](https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/esteban-acevedo-trejos-en.html), "
-                        "[Subhendu Chakraborty] (https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/subhendu-chakraborty.html), "
-                        "[Francesco Pomati] (https://www.eawag.ch/en/about-us/portrait/organisation/staff/profile/francesco-pomati/show/), "
-                        "[Agostino Merico] (https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/agostino-merico.html)")
+                        "[Subhendu Chakraborty](https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/subhendu-chakraborty.html), "
+                        "[Francesco Pomati](https://www.eawag.ch/en/about-us/portrait/organisation/staff/profile/francesco-pomati/show/), "
+                        "[Agostino Merico](https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/agostino-merico.html)")
             st.markdown("**Journal:** *Limnology and Oceanography*, 69:933–946 (2024)")
             st.markdown("**DOI:** [10.1002/lno.12538](https://doi.org/10.1002/lno.12538)")
 
@@ -333,9 +333,9 @@ if selected == sidebar_items[1]:
             st.markdown("**Authors:** Sze-Wing To, "
                         "[Esteban Acevedo-Trejos](https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/esteban-acevedo-trejos-en.html), "
                         "[Sherwood Lan Smith](https://wpi-aimec.jp/en/member/Smith-SherwoodLan.html), "
-                        "[Subhendu Chakraborty] (https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/subhendu-chakraborty.html), "
-                        "[Francesco Pomati] (https://www.eawag.ch/en/about-us/portrait/organisation/staff/profile/francesco-pomati/show/), "
-                        "[Agostino Merico] (https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/agostino-merico.html)")            
+                        "[Subhendu Chakraborty](https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/subhendu-chakraborty.html), "
+                        "[Francesco Pomati](https://www.eawag.ch/en/about-us/portrait/organisation/staff/profile/francesco-pomati/show/), "
+                        "[Agostino Merico](https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/agostino-merico.html)")            
             st.markdown("**Journal:** *Ecological Modelling*, 499:110936 (2025)")
             st.markdown("**DOI:** [10.1016/j.ecolmodel.2024.110936](https://doi.org/10.1016/j.ecolmodel.2024.110936)")
 
