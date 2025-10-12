@@ -112,7 +112,8 @@ st.sidebar.markdown("[PhD Dissertation](https://opus.constructor.university/fron
 
 st.sidebar.markdown("---")  # horizontal line
 st.sidebar.caption("This PhD project received funding from the German Research Foundation (DFG) "
-                    "and Swiss National Science Foundation (SNF) as part of the project AQUASCOPE (grant No. 412375259).")
+                    "and Swiss National Science Foundation (SNF) as part of the project AQUASCOPE (grant No. 412375259)."
+                    "The project was hosted at institute [Leibniz Center for Tropical Marine Research (ZMT)](https://leibniz-zmt.de/en/), Bremen.")
 
 
 
@@ -259,7 +260,6 @@ if selected == sidebar_items[0]:
                 "```"
             )
 
-
 # ---------------------- Manuscript ----------------------
 if selected == sidebar_items[1]:
     st.title("📚 Publications")
@@ -274,7 +274,11 @@ if selected == sidebar_items[1]:
 
         with col1:
             st.subheader("Grazing strategies determine the size composition of phytoplankton in eutrophic lakes")
-            st.markdown("**Authors:** Sze-Wing To, Esteban Acevedo-Trejos, Subhendu Chakraborty, Francesco Pomati, Agostino Merico")
+            st.markdown("**Authors:** Sze-Wing To, "
+                        "[Esteban Acevedo-Trejos](https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/esteban-acevedo-trejos-en.html), "
+                        "[Subhendu Chakraborty] (https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/subhendu-chakraborty.html), "
+                        "[Francesco Pomati] (https://www.eawag.ch/en/about-us/portrait/organisation/staff/profile/francesco-pomati/show/), "
+                        "[Agostino Merico] (https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/agostino-merico.html)")
             st.markdown("**Journal:** *Limnology and Oceanography*, 69:933–946 (2024)")
             st.markdown("**DOI:** [10.1002/lno.12538](https://doi.org/10.1002/lno.12538)")
 
@@ -326,7 +330,12 @@ if selected == sidebar_items[1]:
 
         with col1:
             st.subheader("Ecological and environmental factors influencing exclusion patterns of phytoplankton size classes in lake systems")
-            st.markdown("**Authors:** Sze-Wing To, Esteban Acevedo-Trejos, Sherwood Lan Smith, Subhendu Chakraborty, Agostino Merico")
+            st.markdown("**Authors:** Sze-Wing To, "
+                        "[Esteban Acevedo-Trejos](https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/esteban-acevedo-trejos-en.html), "
+                        "[Sherwood Lan Smith](https://wpi-aimec.jp/en/member/Smith-SherwoodLan.html), "
+                        "[Subhendu Chakraborty] (https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/subhendu-chakraborty.html), "
+                        "[Francesco Pomati] (https://www.eawag.ch/en/about-us/portrait/organisation/staff/profile/francesco-pomati/show/), "
+                        "[Agostino Merico] (https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/agostino-merico.html)")            
             st.markdown("**Journal:** *Ecological Modelling*, 499:110936 (2025)")
             st.markdown("**DOI:** [10.1016/j.ecolmodel.2024.110936](https://doi.org/10.1016/j.ecolmodel.2024.110936)")
 
