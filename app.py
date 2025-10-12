@@ -438,29 +438,23 @@ if selected == sidebar_items[2]:
                 xaxis=dict(
                     title='Date',
                     rangeselector=dict(
-                        buttons=list([
+                        buttons=[
                             dict(count=1, label='1m', step='month', stepmode='backward'),
                             dict(count=3, label='3m', step='month', stepmode='backward'),
                             dict(count=6, label='6m', step='month', stepmode='backward'),
                             dict(count=1, label='1y', step='year', stepmode='backward'),
                             dict(step='all', label='All')
-                        ]),
-                        bgcolor='#262730',
-                        activecolor='#4dabf7',
-                        font=dict(color='#fafafa')
+                        ]
                     ),
-                    rangeslider=dict(visible=True, bgcolor='#262730'),
+                    rangeslider=dict(visible=True),
                     type='date'
                 ),
                 yaxis=dict(
-                    title='Temperature (°C)',
-                    titlefont=dict(color='#FF6B6B'),
-                    tickfont=dict(color='#FF6B6B'),
-                    side='left'
+                    title=dict(text='Temperature (°C)', font=dict(color='#FF6B6B')),
+                    tickfont=dict(color='#FF6B6B')
                 ),
                 yaxis2=dict(
-                    title='Solar Radiation (W/m²)',
-                    titlefont=dict(color='#FFA500'),
+                    title=dict(text='Solar Radiation (W/m²)', font=dict(color='#FFA500')),
                     tickfont=dict(color='#FFA500'),
                     overlaying='y',
                     side='right'
@@ -474,8 +468,7 @@ if selected == sidebar_items[2]:
                     y=1.02,
                     xanchor='right',
                     x=1
-                ),
-                margin=dict(l=80, r=80, t=50, b=120)
+                )
             )
 
             st.plotly_chart(fig, use_container_width=True)
