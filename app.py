@@ -389,7 +389,6 @@ if selected == sidebar_items[1]:
 # ---------------------- Data ----------------------
 if selected == sidebar_items[2]:
     st.header("Data 📊📈")
-    # st.subheader("Overview")
     st.write(
         "Have a look at the real lake data collected between years 2019 and 2022 by the state-of-art "
         "underwater microscope placed at Greifensee, Switzerland🇨🇭"
@@ -398,9 +397,116 @@ if selected == sidebar_items[2]:
     tab1, tab2, tab3 = st.tabs(tab_names_data)
 
     with tab1:
-        st.write(
-            ""
-        )
+        st.subheader("🌡️ Temperature & ☀️ Solar Radiation (2019-2022)")
+        st.write("Explore how temperature and solar radiation change throughout the seasons at Greifensee!")
+
+        # Load physical data
+        try:
+            # Check if actual data file exists, otherwise use sample
+            if os.path.exists("data/physical_data.csv"):
+                df_physical = pd.read_csv("data/physical_data.csv")
+            else:
+                df_physical = pd.read_csv("data/sample_physical_data.csv")
+
+            df_physical['date'] = pd.to_datetime(df_physical['date'])
+
+            # Create dual-axis interactive plot
+            fig = go.Figure()
+
+            # Add temperature trace (left y-axis)
+            fig.add_trace(go.Scatter(
+                x=df_physical['date'],
+                y=df_physical['temperature_C'],
+                name='Temperature',
+                line=dict(color='#FF6B6B', width=2),
+                yaxis='y1',
+                hovertemplate='<b>Temperature</b><br>%{y:.1f}°C<br>%{x|%Y-%m-%d}<extra></extra>'
+            ))
+
+            # Add solar radiation trace (right y-axis)
+            fig.add_trace(go.Scatter(
+                x=df_physical['date'],
+                y=df_physical['solar_radiation_W_m2'],
+                name='Solar Radiation',
+                line=dict(color='#FFA500', width=2),
+                yaxis='y2',
+                hovertemplate='<b>Solar Radiation</b><br>%{y:.1f} W/m²<br>%{x|%Y-%m-%d}<extra></extra>'
+            ))
+
+            # Update layout with dual axes and range selector
+            fig.update_layout(
+                xaxis=dict(
+                    title='Date',
+                    rangeselector=dict(
+                        buttons=list([
+                            dict(count=1, label='1m', step='month', stepmode='backward'),
+                            dict(count=3, label='3m', step='month', stepmode='backward'),
+                            dict(count=6, label='6m', step='month', stepmode='backward'),
+                            dict(count=1, label='1y', step='year', stepmode='backward'),
+                            dict(step='all', label='All')
+                        ]),
+                        bgcolor='#262730',
+                        activecolor='#4dabf7',
+                        font=dict(color='#fafafa')
+                    ),
+                    rangeslider=dict(visible=True, bgcolor='#262730'),
+                    type='date'
+                ),
+                yaxis=dict(
+                    title='Temperature (°C)',
+                    titlefont=dict(color='#FF6B6B'),
+                    tickfont=dict(color='#FF6B6B'),
+                    side='left'
+                ),
+                yaxis2=dict(
+                    title='Solar Radiation (W/m²)',
+                    titlefont=dict(color='#FFA500'),
+                    tickfont=dict(color='#FFA500'),
+                    overlaying='y',
+                    side='right'
+                ),
+                hovermode='x unified',
+                template='plotly_dark',
+                height=600,
+                legend=dict(
+                    orientation='h',
+                    yanchor='bottom',
+                    y=1.02,
+                    xanchor='right',
+                    x=1
+                ),
+                margin=dict(l=80, r=80, t=50, b=120)
+            )
+
+            st.plotly_chart(fig, use_container_width=True)
+
+            # Add insights
+            with st.expander("💡 What patterns do you see?"):
+                st.markdown("""
+                **Seasonal Patterns:**
+                - 🌞 **Solar radiation peaks in summer** (June-August) with the longest days and strongest sunlight
+                - ❄️ **Winter brings low radiation** (December-February) with short days and low sun angles
+                - 🌡️ **Temperature follows solar radiation** but with a slight delay (thermal inertia)
+
+                **Key Observations:**
+                - Temperature ranges from ~4°C in winter to ~20°C in summer
+                - Solar radiation can vary dramatically day-to-day due to cloud cover
+                - The relationship between sunlight and temperature drives the entire lake ecosystem!
+
+                **Try this:** Use the range selector to zoom into a specific season and see daily variations!
+                """)
+
+        except FileNotFoundError:
+            st.warning("⚠️ Data file not found. Please add your data file as `data/physical_data.csv`")
+            st.info("""
+            **Expected CSV format:**
+            ```
+            date,temperature_C,solar_radiation_W_m2
+            2019-01-01,4.2,45.3
+            2019-01-02,4.1,52.1
+            ...
+            ```
+            """)
 
     with tab2:
         st.write(
