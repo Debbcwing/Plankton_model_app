@@ -402,13 +402,13 @@ if selected == sidebar_items[2]:
 
         # Load physical data
         try:
-            # Check if actual data file exists, otherwise use sample
-            if os.path.exists("data/physical_data.csv"):
-                df_physical = pd.read_csv("data/physical_data.csv")
-            else:
-                df_physical = pd.read_csv("data/sample_physical_data.csv")
+            # Load real data
+            df_physical = pd.read_csv("data/RawData_Temp+PAR.csv", index_col=0)
 
+            # Convert date and handle NA values
             df_physical['date'] = pd.to_datetime(df_physical['date'])
+            df_physical['water_temp'] = pd.to_numeric(df_physical['water_temp'], errors='coerce')
+            df_physical['global_radiation'] = pd.to_numeric(df_physical['global_radiation'], errors='coerce')
 
             # Create dual-axis interactive plot
             fig = go.Figure()
@@ -416,7 +416,7 @@ if selected == sidebar_items[2]:
             # Add temperature trace (left y-axis)
             fig.add_trace(go.Scatter(
                 x=df_physical['date'],
-                y=df_physical['temperature_C'],
+                y=df_physical['water_temp'],
                 name='Temperature',
                 line=dict(color='#FF6B6B', width=2),
                 yaxis='y1',
@@ -426,7 +426,7 @@ if selected == sidebar_items[2]:
             # Add solar radiation trace (right y-axis)
             fig.add_trace(go.Scatter(
                 x=df_physical['date'],
-                y=df_physical['solar_radiation_W_m2'],
+                y=df_physical['global_radiation'],
                 name='Solar Radiation',
                 line=dict(color='#FFA500', width=2),
                 yaxis='y2',
