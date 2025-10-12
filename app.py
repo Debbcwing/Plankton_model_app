@@ -118,20 +118,7 @@ st.sidebar.caption("This PhD project received funding from the German Research F
 
 # ---------------------- HOME PAGE ----------------------
 if selected == sidebar_items[0]:
-    # Lazy import RAG libraries (only when Home tab is accessed)
-    from config.rag_setup import RAGSystem
-    from langchain_anthropic import ChatAnthropic
-    from langchain.chains import RetrievalQA
-
     st.title("Hello👋🏼  Ask me anything about my PhD research on plankton modeling!")
-
-    # Initialize RAG system
-    @st.cache_resource(show_spinner=False)
-    def load_rag_system():
-        """Load RAG system (cached to avoid reloading)."""
-        rag = RAGSystem()
-        rag.setup(force_rebuild=False)
-        return rag
 
     # Check if API key is set
     api_key = os.getenv("ANTHROPIC_API_KEY")
@@ -147,40 +134,58 @@ if selected == sidebar_items[0]:
             "2. Restart the Streamlit app"
         )
     else:
-        # Load RAG system
+        # Load RAG system and dependencies only when needed
         try:
-            with st.spinner("Loading..."):
-                rag_system = load_rag_system()
-
-            # Initialize Claude
-            llm = ChatAnthropic(
-                model="claude-3-5-haiku-20241022",
-                anthropic_api_key=api_key,
-                temperature=0.5,
-                max_tokens=300
-            )
-
-            # Load custom prompt template from file
+            # Lazy imports - only load when API key exists
+            from config.rag_setup import RAGSystem
+            from langchain_anthropic import ChatAnthropic
+            from langchain.chains import RetrievalQA
             from langchain.prompts import PromptTemplate
 
-            with open("config/prompt_template.txt", "r") as f:
-                prompt_template = f.read()
+            @st.cache_resource(show_spinner=False)
+            def load_rag_system():
+                """Load RAG system (cached to avoid reloading)."""
+                rag = RAGSystem()
+                rag.setup(force_rebuild=False)
+                return rag
 
-            PROMPT = PromptTemplate(
-                template=prompt_template,
-                input_variables=["context", "question"]
-            )
+            @st.cache_resource(show_spinner=False)
+            def load_qa_chain(_api_key):
+                """Initialize QA chain (cached)."""
+                # Load RAG system
+                rag_system = load_rag_system()
 
-            # Create QA chain with custom prompt
-            qa_chain = RetrievalQA.from_chain_type(
-                llm=llm,
-                chain_type="stuff",
-                retriever=rag_system.vectorstore.as_retriever(
-                    search_kwargs={"k": 2}  # Return top 3 relevant chunks
-                ),
-                return_source_documents=True,
-                chain_type_kwargs={"prompt": PROMPT}
-            )
+                # Initialize Claude
+                llm = ChatAnthropic(
+                    model="claude-3-5-haiku-20241022",
+                    anthropic_api_key=_api_key,
+                    temperature=0.5,
+                    max_tokens=300
+                )
+
+                # Load custom prompt template from file
+                with open("config/prompt_template.txt", "r") as f:
+                    prompt_template = f.read()
+
+                PROMPT = PromptTemplate(
+                    template=prompt_template,
+                    input_variables=["context", "question"]
+                )
+
+                # Create QA chain with custom prompt
+                qa_chain = RetrievalQA.from_chain_type(
+                    llm=llm,
+                    chain_type="stuff",
+                    retriever=rag_system.vectorstore.as_retriever(
+                        search_kwargs={"k": 2}
+                    ),
+                    return_source_documents=True,
+                    chain_type_kwargs={"prompt": PROMPT}
+                )
+                return qa_chain
+
+            with st.spinner("Loading..."):
+                qa_chain = load_qa_chain(api_key)
 
             # Show example Q&A pairs
             with st.expander("💡  Some common questions and answers"):
@@ -257,7 +262,7 @@ if selected == sidebar_items[0]:
 
 # ---------------------- Manuscript ----------------------
 if selected == sidebar_items[1]:
-    st.header("📚 Publications")
+    st.title("📚 Publications")
     st.write("Explore my peer-reviewed research on phytoplankton size structure and community dynamics in lake ecosystems.")
 
     tab_names_ms = ["Manuscript 1 (2024)", "Manuscript 2 (2025)", "Manuscript 3 (Under Review)"]
@@ -274,18 +279,20 @@ if selected == sidebar_items[1]:
             st.markdown("**DOI:** [10.1002/lno.12538](https://doi.org/10.1002/lno.12538)")
 
         with col2:
-            st.download_button(
-                label="📄 Download PDF",
-                data=open("MS/To et al. (2024).pdf", "rb"),
-                file_name="To_et_al_2024.pdf",
-                mime="application/pdf"
-            )
-            st.download_button(
-                label="📊 Supplementary Material",
-                data=open("MS/To et al. (2024)supp.pdf", "rb"),
-                file_name="To_et_al_2024_supplement.pdf",
-                mime="application/pdf"
-            )
+            with open("MS/To et al. (2024).pdf", "rb") as f:
+                st.download_button(
+                    label="📄 Download PDF",
+                    data=f,
+                    file_name="To_et_al_2024.pdf",
+                    mime="application/pdf"
+                )
+            with open("MS/To et al. (2024)supp.pdf", "rb") as f:
+                st.download_button(
+                    label="📊 Supplementary Material",
+                    data=f,
+                    file_name="To_et_al_2024_supplement.pdf",
+                    mime="application/pdf"
+                )
 
         st.markdown("---")
 
@@ -324,18 +331,20 @@ if selected == sidebar_items[1]:
             st.markdown("**DOI:** [10.1016/j.ecolmodel.2024.110936](https://doi.org/10.1016/j.ecolmodel.2024.110936)")
 
         with col2:
-            st.download_button(
-                label="📄 Download PDF",
-                data=open("MS/To et al. (2025).pdf", "rb"),
-                file_name="To_et_al_2025.pdf",
-                mime="application/pdf"
-            )
-            st.download_button(
-                label="📊 Supplementary Material",
-                data=open("MS/To et al. (2025)supp.pdf", "rb"),
-                file_name="To_et_al_2025_supplement.pdf",
-                mime="application/pdf"
-            )
+            with open("MS/To et al. (2025).pdf", "rb") as f:
+                st.download_button(
+                    label="📄 Download PDF",
+                    data=f,
+                    file_name="To_et_al_2025.pdf",
+                    mime="application/pdf"
+                )
+            with open("MS/To et al. (2025)supp.pdf", "rb") as f:
+                st.download_button(
+                    label="📊 Supplementary Material",
+                    data=f,
+                    file_name="To_et_al_2025_supplement.pdf",
+                    mime="application/pdf"
+                )
 
         st.markdown("---")
 
@@ -388,10 +397,11 @@ if selected == sidebar_items[1]:
 
 # ---------------------- Data ----------------------
 if selected == sidebar_items[2]:
-    st.header("Data 📊📈")
+    st.title("📊 Data")
     st.write(
         "Have a look at the real lake data collected between years 2019 and 2022 by the state-of-art "
-        "underwater microscope placed at Greifensee, Switzerland🇨🇭"
+        "underwater microscope placed at [Greifensee](https://www.myswitzerland.com/de-ch/reiseziele/greifensee/),"
+        " Switzerland🇨🇭"
     )
     tab_names_data = ["Physical", "Chemical", "Biological"]
     tab1, tab2, tab3 = st.tabs(tab_names_data)
@@ -402,13 +412,16 @@ if selected == sidebar_items[2]:
 
         # Load physical data
         try:
-            # Load real data
-            df_physical = pd.read_csv("data/RawData_Temp+PAR.csv", index_col=0)
+            @st.cache_data(show_spinner=False)
+            def load_physical_data():
+                """Load and preprocess physical data (cached)."""
+                df = pd.read_csv("data/RawData_Temp+PAR.csv", index_col=0)
+                df['date'] = pd.to_datetime(df['date'])
+                df['water_temp'] = pd.to_numeric(df['water_temp'], errors='coerce')
+                df['global_radiation'] = pd.to_numeric(df['global_radiation'], errors='coerce')
+                return df
 
-            # Convert date and handle NA values
-            df_physical['date'] = pd.to_datetime(df_physical['date'])
-            df_physical['water_temp'] = pd.to_numeric(df_physical['water_temp'], errors='coerce')
-            df_physical['global_radiation'] = pd.to_numeric(df_physical['global_radiation'], errors='coerce')
+            df_physical = load_physical_data()
 
             # Create dual-axis interactive plot
             fig = go.Figure()
@@ -494,47 +507,54 @@ if selected == sidebar_items[2]:
 
     with tab2:
         st.write(
-            ""
+            "In working progress.."
         )
 
     with tab3:
         st.write(
-            "X"
+            "In working progress.."
         )
 
 
 
 # ---------------------- Model ----------------------
 if selected == sidebar_items[3]:
-    st.header("Model")
-    # st.subheader("Overview")
-    st.write(
-        ""
-    )
+    st.title("🖥️ Model")
+    # st.subheader(
+    #         "A simplified lake ecosystem"
+    #     )
 
     tab_names_model = ["Concepts", "Baseline", "Reaction", "Forecast"]
     tab1, tab2, tab3, tab4 = st.tabs(tab_names_model)
 
     with tab1:
-        st.subheader(
-            "A simplified lake ecosystem"
+        st.write(
+            "In a simplified lake ecosystem model, there are five main components: Nutrients, Phytoplankton, Zooplankton, Detritus, and Fish. "
+            "Nutrients are essential for phytoplankton growth, while zooplankton feed on phytoplankton. "
+            "Fish can prey on zooplankton, affecting their population dynamics. "
+            "Detritus consists of dead organic matter, which can be decomposed back into nutrients. "
+            "Apart from these biotic interactions, physical factors such as temperature and light availability also play crucial roles in shaping the ecosystem. "
+            "Physical processes like mixing and stratification influence nutrient distribution and organism interactions. "
+            "Lastly, external inputs such as nutrient runoff from human settlements can alter nutrient levels in the lake. "
+            "The interactions among all these components create a complex web of relationships that drive the ecosystem's dynamics."
         )
-        # @st.cache_data
-        st.image("lake-fig.webp")
+        col1, col2, col3 = st.columns([1, 5, 1])
+        with col2:
+            st.image("lake-fig.webp", use_container_width=True)
     
     with tab2:
         st.write(
-            ""
+            "In working progress.."
         )
 
     with tab3:
         st.write(
-            ""
+            "In working progress.."
         )
     
     with tab4:
         st.write(
-            ""
+            "In working progress.."
         )    
 
 
