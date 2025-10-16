@@ -32,17 +32,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r app_run/requirements.txt
 
-      - name: Verify environment
-        run: |
-          echo "Python version:"
-          python --version
-          echo "Chrome/Chromium version:"
-          chromium-browser --version || echo "Chromium not found"
-          chromedriver --version || echo "Chromedriver not found"
-
       - name: Run Selenium script
         env:
           STREAMLIT_APP_URL: ${{ secrets.STREAMLIT_APP_URL }}
-        run: |
-          echo "Running wake script..."
-          python app_run/main.py
+        run: python app_run/main.py

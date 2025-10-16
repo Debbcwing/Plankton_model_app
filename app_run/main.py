@@ -9,7 +9,8 @@ from selenium.common.exceptions import TimeoutException
 import os
 
 # Streamlit app URL from environment variable (or default)
-STREAMLIT_URL = os.environ.get("STREAMLIT_APP_URL", "https://lake-plankton.streamlit.app/")
+# Use 'or' to handle empty strings, not just None
+STREAMLIT_URL = os.environ.get("STREAMLIT_APP_URL") or "https://lake-plankton.streamlit.app/"
 
 def main():
     print(f"Starting wake script for: {STREAMLIT_URL}")
