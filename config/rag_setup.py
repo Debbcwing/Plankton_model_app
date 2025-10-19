@@ -1,15 +1,22 @@
 """
 RAG System Configuration
 This script processes PDF documents and creates a vector database for retrieval.
+
+Setup:
+- Local embeddings using sentence-transformers (free, runs on CPU)
+- Claude (Anthropic) for answering questions (configured in app.py)
 """
 
 import os
 from pathlib import Path
 from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
-import streamlit as st
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 
 class RAGSystem:
@@ -21,9 +28,10 @@ class RAGSystem:
         self.embeddings = None
         self.vectorstore = None
 
-    @st.cache_resource
-    def initialize_embeddings(_self):
-        """Initialize embedding model (cached to avoid reloading)."""
+    def initialize_embeddings(self):
+        """Initialize local embedding model (lightweight, CPU-friendly)."""
+        print("✓ Using local embeddings (all-MiniLM-L6-v2)")
+
         return HuggingFaceEmbeddings(
             model_name="sentence-transformers/all-MiniLM-L6-v2",
             model_kwargs={'device': 'cpu'},
@@ -74,15 +82,46 @@ class RAGSystem:
         return self.vectorstore
 
     def load_vectorstore(self):
-        """Load existing vector database."""
+        """Load existing vector database with validation."""
         self.embeddings = self.initialize_embeddings()
 
-        self.vectorstore = Chroma(
-            persist_directory=self.persist_directory,
-            embedding_function=self.embeddings
-        )
+        try:
+            self.vectorstore = Chroma(
+                persist_directory=self.persist_directory,
+                embedding_function=self.embeddings
+            )
 
-        return self.vectorstore
+            # Validate that the database has content
+            try:
+                collection = self.vectorstore._collection
+                doc_count = collection.count()
+
+                if doc_count == 0:
+                    raise ValueError("Vector database is empty")
+
+                print(f"✓ Loaded vector database with {doc_count} documents")
+
+            except Exception as e:
+                print(f"Warning: Could not validate database content: {e}")
+                # Continue anyway - let it fail later if truly broken
+
+            return self.vectorstore
+
+        except Exception as e:
+            error_msg = str(e)
+            print(f"❌ Error loading vector database: {error_msg}")
+
+            # Provide helpful error message
+            if "Embeddings" in error_msg or "empty" in error_msg.lower():
+                raise ValueError(
+                    "Vector database is corrupted or empty. "
+                    "Please rebuild by running: python config/rag_setup.py"
+                )
+            else:
+                raise ValueError(
+                    f"Failed to load vector database: {error_msg}. "
+                    f"Try rebuilding with: python config/rag_setup.py"
+                )
 
     def setup(self, force_rebuild=False):
         """
