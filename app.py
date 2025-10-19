@@ -251,14 +251,29 @@ if selected == sidebar_items[0]:
             st.write("")
 
         except Exception as e:
-            st.error(f"Error loading RAG system: {str(e)}")
-            st.info(
-                "If this is your first time running the app, you need to build the vector database:\n\n"
-                "Run this command in your terminal:\n"
-                "```bash\n"
-                "python rag_setup.py\n"
-                "```"
-            )
+            error_msg = str(e)
+
+            # Show cleaner error message
+            if "corrupted or empty" in error_msg.lower() or "embeddings" in error_msg.lower():
+                st.error("⚠️ Vector database is corrupted or empty")
+                st.info(
+                    "**To fix this issue:**\n\n"
+                    "Run this command in your terminal to rebuild the database:\n"
+                    "```bash\n"
+                    "python config/rag_setup.py\n"
+                    "```\n\n"
+                    "This will process your PhD documents and create the searchable database."
+                )
+            else:
+                st.error(f"Error loading RAG system: {error_msg}")
+                st.info(
+                    "**Troubleshooting:**\n\n"
+                    "If this is your first time running the app, you need to build the vector database:\n\n"
+                    "Run this command in your terminal:\n"
+                    "```bash\n"
+                    "python config/rag_setup.py\n"
+                    "```"
+                )
 
 # ---------------------- Manuscript ----------------------
 if selected == sidebar_items[1]:
@@ -609,10 +624,242 @@ if selected == sidebar_items[2]:
         """)
 
     with tab3:
-        st.write(
-            "In working progress.."
+        st.subheader("💧 Nutrient Concentrations (2019-2022)")
+        st.write("Nutrients like phosphate, nitrate, and ammonium are essential for plankton growth and lake health.")
+        st.write("Explore how nutrient levels relate to eutrophication (nutrient enrichment) status!")
+
+        # Load nutrient data
+        @st.cache_data(show_spinner=False)
+        def load_nutrient_data():
+            """Load and preprocess nutrient data (cached)."""
+            df = pd.read_csv("data/GRE_raw_plankton_ab_size.csv")
+            df['date'] = pd.to_datetime(df['date'])
+
+            # Select relevant columns
+            df = df[['date', 'phosphate_ug', 'nitrate_mg', 'ammonium_ug']].copy()
+
+            # Convert nitrate from mg/L to µg/L (multiply by 1000)
+            df['nitrate_ug'] = df['nitrate_mg'] * 1000
+
+            # Add season column
+            df['season'] = df['date'].dt.month.map({
+                12: 'Winter', 1: 'Winter', 2: 'Winter',
+                3: 'Spring', 4: 'Spring', 5: 'Spring',
+                6: 'Summer', 7: 'Summer', 8: 'Summer',
+                9: 'Fall', 10: 'Fall', 11: 'Fall'
+            })
+
+            return df
+
+        df_nutrient = load_nutrient_data()
+
+        # Checkboxes for nutrient selection with info-style background
+        container = st.container(border=True)
+        with container:
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                show_phosphate = st.checkbox("Phosphate (µg/L)", value=True, key="phosphate_check")
+            with col2:
+                show_nitrate = st.checkbox("Nitrate (µg/L)", value=False, key="nitrate_check")
+            with col3:
+                show_ammonium = st.checkbox("Ammonium (µg/L)", value=False, key="ammonium_check")
+
+        # Create subplot: 2/3 for time series, 1/3 for boxplot
+        from plotly.subplots import make_subplots
+
+        fig = make_subplots(
+            rows=1, cols=2,
+            column_widths=[0.7, 0.3],
+            subplot_titles=('Nutrient Concentrations Over Time', 'Seasonal Distribution'),
+            horizontal_spacing=0.1,
+            specs=[[{"secondary_y": True}, {"secondary_y": True}]]  # Enable secondary y-axis for left plot
         )
 
+        # Nutrient configurations
+        nutrients = {
+            'phosphate': {
+                'show': show_phosphate,
+                'column': 'phosphate_ug',
+                'name': 'Phosphate',
+                'color': 'rgb(106, 13, 173)',
+                'unit': 'µg/L',
+                'secondary_y': False,  # Left y-axis
+                'thresholds': [10, 30]  # Oligotrophic, Mesotrophic, Eutrophic
+            },
+            'nitrate': {
+                'show': show_nitrate,
+                'column': 'nitrate_ug',
+                'name': 'Nitrate',
+                'color': 'rgb(0, 102, 204)',
+                'unit': 'µg/L',
+                'secondary_y': True,  # Right y-axis
+                'thresholds': None
+            },
+            'ammonium': {
+                'show': show_ammonium,
+                'column': 'ammonium_ug',
+                'name': 'Ammonium',
+                'color': 'rgb(255, 140, 0)',
+                'unit': 'µg/L',
+                'secondary_y': False,  # Left y-axis with phosphate
+                'thresholds': None
+            }
+        }
+
+        # Add eutrophication zones for phosphate (only if phosphate is selected)
+        if show_phosphate:
+            df_p = df_nutrient.dropna(subset=['phosphate_ug'])
+            max_val = max(df_p['phosphate_ug'].max() * 1.2, 50)  # Ensure visible range
+
+            fig.add_hrect(y0=0, y1=10, fillcolor="green", opacity=0.25, layer="below",
+                         annotation_text="Oligotrophic", annotation_position="top left",
+                         annotation=dict(font_size=9, font_color="darkgreen"),
+                         row=1, col=1, secondary_y=False)
+            fig.add_hrect(y0=10, y1=30, fillcolor="yellow", opacity=0.25, layer="below",
+                         annotation_text="Mesotrophic", annotation_position="top left",
+                         annotation=dict(font_size=9, font_color="darkorange"),
+                         row=1, col=1, secondary_y=False)
+            fig.add_hrect(y0=30, y1=max_val, fillcolor="red", opacity=0.25, layer="below",
+                         annotation_text="Eutrophic", annotation_position="top left",
+                         annotation=dict(font_size=9, font_color="darkred"),
+                         row=1, col=1, secondary_y=False)
+
+        # Plot selected nutrients
+        seasons_order = ['Spring', 'Summer', 'Fall', 'Winter']
+        season_colors = {'Spring': 'rgba(144, 238, 144, 0.6)', 'Summer': 'rgba(255, 215, 0, 0.6)',
+                        'Fall': 'rgba(255, 165, 0, 0.6)', 'Winter': 'rgba(173, 216, 230, 0.6)'}
+
+        for nutrient_key, config in nutrients.items():
+            if config['show']:
+                df_filtered = df_nutrient.dropna(subset=[config['column']])
+
+                # Time series (left panel) with secondary_y support
+                fig.add_trace(
+                    go.Scatter(
+                        x=df_filtered['date'],
+                        y=df_filtered[config['column']],
+                        name=config['name'],
+                        line=dict(color=config['color'], width=2),
+                        yaxis='y2' if config['secondary_y'] else 'y',
+                        hovertemplate=f'<b>{config["name"]}</b><br>%{{y:.2f}} {config["unit"]}<br>%{{x|%Y-%m-%d}}<extra></extra>'
+                    ),
+                    row=1, col=1, secondary_y=config['secondary_y']
+                )
+
+                # Seasonal boxplot (right panel)
+                # for season in seasons_order:
+                #     season_data = df_filtered[df_filtered['season'] == season]
+                #     if len(season_data) > 0:
+                #         fig.add_trace(
+                #             go.Box(
+                #                 y=season_data[config['column']],
+                #                 name=season,
+                #                 marker_color=season_colors[season],
+                #                 boxmean='sd',
+                #                 legendgroup=season,
+                #                 showlegend=False,
+                #                 hovertemplate=f'<b>{{fullData.name}}</b><br>{config["name"]}: %{{y:.2f}} {config["unit"]}<extra></extra>'
+                #             ),
+                #             row=1, col=2    #
+                #         )
+                for i, season in enumerate(seasons_order):
+                    season_data = df_filtered[df_filtered['season'] == season]
+                    if len(season_data) > 0:
+                        # put the season as the categorical x value, and name as the nutrient so boxes for
+                        # different nutrients appear side-by-side per season
+                        fig.add_trace(
+                            go.Box(
+                                x=[season] * len(season_data),            # categorical x => 'Spring','Summer',...
+                                y=season_data[config['column']],
+                                name=config['name'],                      # name = nutrient (Phosphate/Nitrate/...)
+                                marker_color=config['color'],             # use nutrient color (no alpha)
+                                boxmean='sd',
+                                legendgroup=config['name'],
+                                showlegend=(i == 0),                      # show legend once per nutrient
+                                hovertemplate=f'<b>{config["name"]}</b><br>{season}: %{{y:.2f}} {config["unit"]}<extra></extra>',
+                                line=dict(width=0.8)                       # thinner box lines
+                            ),
+                            row=1, col=2, secondary_y=config['secondary_y']  # Use same y-axis as time series
+                        )
+
+                # after building traces: enable grouped box mode
+                fig.update_layout(boxmode='group')
+
+        # Update axes
+        fig.update_xaxes(title_text="Date", gridcolor='lightgray', row=1, col=1)
+        fig.update_xaxes(title_text="Season", gridcolor='lightgray', row=1, col=2)
+
+        # Update y-axes for time series (left panel) with dual y-axis
+        fig.update_yaxes(
+            title_text="Phosphate & Ammonium (µg/L)",
+            title_font=dict(color='rgb(106, 13, 173)'),
+            tickfont=dict(color='rgb(106, 13, 173)'),
+            gridcolor='lightgray',
+            row=1, col=1,
+            secondary_y=False
+        )
+        fig.update_yaxes(
+            title_text="Nitrate (µg/L)",
+            title_font=dict(color='rgb(0, 102, 204)'),
+            tickfont=dict(color='rgb(0, 102, 204)'),
+            showgrid=False,  # Remove gridlines from secondary y-axis
+            row=1, col=1,
+            secondary_y=True
+        )
+
+        # Update y-axes for boxplot (right panel) with dual y-axis
+        fig.update_yaxes(
+            title_text="Phosphate & Ammonium (µg/L)",
+            title_font=dict(color='rgb(106, 13, 173)'),
+            tickfont=dict(color='rgb(106, 13, 173)'),
+            gridcolor='lightgray',
+            row=1, col=2,
+            secondary_y=False
+        )
+        fig.update_yaxes(
+            title_text="Nitrate (µg/L)",
+            title_font=dict(color='rgb(0, 102, 204)'),
+            tickfont=dict(color='rgb(0, 102, 204)'),
+            showgrid=False,  # Remove gridlines from secondary y-axis
+            row=1, col=2,
+            secondary_y=True
+        )
+
+        # Update layout with title padding
+        fig.update_layout(
+            height=500,
+            plot_bgcolor='white',
+            hovermode='closest',
+            showlegend=True,
+            legend=dict(
+                orientation="h",
+                yanchor="top",
+                y=0.99,
+                xanchor="left",
+                x=0.01,
+                bgcolor='rgba(255,255,255,0.8)',
+                font=dict(color='black')),
+            font=dict(color='white'),
+            margin=dict(t=80)  # Add top margin for title padding
+            )
+
+        # Add padding between subplot titles and plots
+        for annotation in fig['layout']['annotations']:
+            annotation['y'] = annotation['y'] + 0.02  # Move titles slightly up
+
+        st.plotly_chart(fig, use_container_width=True)
+
+        # Add explanation
+        st.info("""
+        **Understanding the visualization:**
+        - **Left panel**: Time series showing nutrient trends over time
+        - **Right panel**: Seasonal patterns (boxplots show median, quartiles, and outliers)
+        - **Select multiple nutrients** using checkboxes above to compare patterns
+        """)
+        # - **Phosphate zones**:
+        #   - Green (0-10 µg/L) = Oligotrophic (nutrient-poor, clear water)
+        #   - Yellow (10-30 µg/L) = Mesotrophic (moderate nutrients)
+        #   - Red (>30 µg/L) = Eutrophic (nutrient-rich, potential algal blooms)
     with tab4:
         st.write(
             "In working progress.."
