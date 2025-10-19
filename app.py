@@ -412,8 +412,8 @@ if selected == sidebar_items[2]:
         "underwater microscope placed at [Greifensee](https://www.myswitzerland.com/de-ch/reiseziele/greifensee/),"
         " Switzerland🇨🇭"
     )
-    tab_names_data = ["Physical", "Chemical", "Biological"]
-    tab1, tab2, tab3 = st.tabs(tab_names_data)
+    tab_names_data = ["Meterological", "Physical", "Chemical", "Biological"]
+    tab1, tab2, tab3, tab4 = st.tabs(tab_names_data)
 
     with tab1:
         st.subheader("🌡️ Temperature & ☀️ Solar Radiation (2019-2022)")
@@ -515,16 +515,108 @@ if selected == sidebar_items[2]:
             """)
 
     with tab2:
-        st.write(
-            "In working progress.."
+        st.subheader("🌀 Lake mixing in the water column (1972-2015)")
+        st.write("Lake mixing is a key physical process that influences nutrient distribution and plankton dynamics.")
+        st.write("Explore Lake mixing patterns at Greifensee over four decades!")
+
+        # Load MLD data
+        @st.cache_data(show_spinner=False)
+        def load_mix_data():
+            """Load and preprocess physical data (cached)."""
+            df = pd.read_csv("data/RawData_MLD.csv", index_col=0)
+            df['date'] = pd.to_datetime(df['date'])
+            df['thermocl'] = pd.to_numeric(df['thermocl'], errors='coerce')
+            return df
+
+        df_mix = load_mix_data()
+
+        # Identify fully mixed periods (30m = lake bottom)
+        df_mix['fully_mixed'] = df_mix['thermocl'] >= 29.5
+
+        fig = go.Figure()
+
+        # Add seasonal background shading
+        years = pd.date_range(start=df_mix['date'].min(), end=df_mix['date'].max(), freq='YS').year
+        for year in years:
+            # Winter (Dec-Feb): light blue
+            fig.add_vrect(x0=f"{year}-01-01", x1=f"{year}-03-01",
+                         fillcolor="lightblue", opacity=0.1, layer="below", line_width=0)
+            # Summer (Jun-Aug): light yellow
+            fig.add_vrect(x0=f"{year}-06-01", x1=f"{year}-09-01",
+                         fillcolor="lightyellow", opacity=0.1, layer="below", line_width=0)
+
+        # Add MLD trace with area fill (inverted to show depth)
+        fig.add_trace(go.Scatter(
+            x=df_mix['date'],
+            y=df_mix['thermocl'],
+            name='Mixed Layer Depth',
+            mode='lines',
+            line=dict(color='rgb(8, 48, 107)', width=1.5),  # Deep ocean blue
+            fill='tozeroy',
+            fillcolor='rgba(8, 81, 156, 0.4)',  # Ocean blue with transparency
+            hovertemplate='<b>MLD</b><br>%{y:.1f} m<br>%{x|%Y-%m-%d}<extra></extra>'
+        ))
+
+        # Highlight fully mixed periods with markers
+        df_fully_mixed = df_mix[df_mix['fully_mixed']]
+        fig.add_trace(go.Scatter(
+            x=df_fully_mixed['date'],
+            y=df_fully_mixed['thermocl'],
+            name='Fully Mixed (to bottom)',
+            mode='markers',
+            marker=dict(color='rgb(220, 50, 50)', size=6, symbol='diamond'),
+            hovertemplate='<b>Fully Mixed</b><br>%{y:.1f} m (lake bottom)<br>%{x|%Y-%m-%d}<extra></extra>'
+        ))
+
+        # Add reference line for average MLD
+        avg_mld = df_mix['thermocl'].mean()
+        fig.add_hline(y=avg_mld, line_dash="dash", line_color="gray",
+                     annotation_text=f"Average: {avg_mld:.1f}m",
+                     annotation_position="right")
+
+        # Update layout with inverted y-axis
+        fig.update_layout(
+            yaxis=dict(
+                title="Mixed Layer Depth (m)",
+                autorange="reversed",  # Invert y-axis so depth goes down
+                gridcolor='lightgray'
+            ),
+            xaxis=dict(
+                title="Date",
+                gridcolor='lightgray',
+                rangeslider=dict(visible=True),
+                type='date'
+            ),
+            hovermode='x unified',
+            plot_bgcolor='white',
+            height=500,
+            showlegend=True,
+            legend=dict(x=0.01, y=0.99, bgcolor='rgba(255,255,255,0.8)', font=dict(color='black')),
+            font=dict(color='black')
         )
+
+        st.plotly_chart(fig, use_container_width=True)
+
+        # Add explanation text
+        st.info("""
+        **Try this:** Use the range selector to zoom into a specific season and see daily variations!
+        
+        **Reading the chart:**
+        - **Deeper colors** = deeper mixed layer (more mixing)
+        - **Red diamonds** = fully mixed to lake bottom (~30m)
+        - **Seasonal patterns**: Winter mixing (blue background) vs. summer stratification (yellow background)
+        - **Average depth** shown as dashed gray line
+        """)
 
     with tab3:
         st.write(
             "In working progress.."
         )
 
-
+    with tab4:
+        st.write(
+            "In working progress.."
+        )
 
 # ---------------------- Model ----------------------
 if selected == sidebar_items[3]:
