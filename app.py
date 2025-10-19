@@ -140,19 +140,18 @@ if selected == sidebar_items[0]:
             # Lazy imports - only load when API key exists
             from config.rag_setup import RAGSystem
             from langchain_anthropic import ChatAnthropic
-            from langchain.chains import RetrievalQA
-            from langchain.prompts import PromptTemplate
+            from langchain.chains.combine_documents import create_stuff_documents_chain
+            from langchain.chains import create_retrieval_chain
+            from langchain_core.prompts import ChatPromptTemplate
 
-            @st.cache_resource(show_spinner=False)
             def load_rag_system():
-                """Load RAG system (cached to avoid reloading)."""
+                """Load RAG system."""
                 rag = RAGSystem()
                 rag.setup(force_rebuild=False)
                 return rag
 
-            @st.cache_resource(show_spinner=False)
             def load_qa_chain(_api_key):
-                """Initialize QA chain (cached)."""
+                """Initialize QA chain."""
                 # Load RAG system
                 rag_system = load_rag_system()
 
@@ -168,21 +167,16 @@ if selected == sidebar_items[0]:
                 with open("config/prompt_template.txt", "r") as f:
                     prompt_template = f.read()
 
-                PROMPT = PromptTemplate(
-                    template=prompt_template,
-                    input_variables=["context", "question"]
-                )
+                # Create prompt using ChatPromptTemplate
+                prompt = ChatPromptTemplate.from_template(prompt_template)
 
-                # Create QA chain with custom prompt
-                qa_chain = RetrievalQA.from_chain_type(
-                    llm=llm,
-                    chain_type="stuff",
-                    retriever=rag_system.vectorstore.as_retriever(
-                        search_kwargs={"k": 2}
-                    ),
-                    return_source_documents=True,
-                    chain_type_kwargs={"prompt": PROMPT}
-                )
+                # Create the document chain
+                document_chain = create_stuff_documents_chain(llm, prompt)
+
+                # Create retrieval chain
+                retriever = rag_system.vectorstore.as_retriever(search_kwargs={"k": 2})
+                qa_chain = create_retrieval_chain(retriever, document_chain)
+
                 return qa_chain
 
             with st.spinner("Loading..."):
@@ -222,15 +216,15 @@ if selected == sidebar_items[0]:
 
             if user_question:
                 with st.spinner("Searching through documents..."):
-                    result = qa_chain.invoke({"query": user_question})
+                    result = qa_chain.invoke({"input": user_question})
 
                     # Display answer
                     st.subheader("Answer:")
-                    st.write(result["result"])
+                    st.write(result["answer"])
 
                     # Show sources
                     with st.expander("📚 View source documents"):
-                        for i, doc in enumerate(result["source_documents"], 1):
+                        for i, doc in enumerate(result["context"], 1):
                             source_file = doc.metadata.get('source', 'Unknown')
                             page = doc.metadata.get('page', 'Unknown')
 
