@@ -6,15 +6,14 @@ numpy==1.26.4
 seaborn==0.13.2
 pandas
 
-# RAG system dependencies (updated to latest compatible versions)
-langchain==0.3.27
-langchain-core>=0.3.70
-langchain-community==0.3.31
-langchain-anthropic==0.3.22
-langchain-huggingface==0.3.1
-chromadb==0.5.23
-pypdf==5.1.0
-anthropic>=0.69.0
-python-dotenv==1.0.0
-sentence-transformers==3.3.1
-torch>=2.0.0
+# RAG system dependencies
+langchain>=0.3.0
+langchain-core>=0.3.0
+langchain-community>=0.3.0
+langchain-anthropic>=0.3.0
+langchain-huggingface>=0.1.0
+chromadb>=0.5.0
+pypdf>=5.0.0
+anthropic>=0.40.0
+python-dotenv>=1.0.0
+sentence-transformers>=3.0.0
