@@ -1,9 +1,10 @@
-plotly==6.0.1
-matplotlib==3.10.0
+plotly==5.24.1
+matplotlib==3.9.4
 streamlit==1.48.1
 streamlit_option_menu==0.4.0
 numpy==1.26.4
 seaborn==0.13.2
+pandas
 
 # RAG system dependencies (updated to latest compatible versions)
 langchain==0.3.27
@@ -16,3 +17,4 @@ pypdf==5.1.0
 anthropic>=0.69.0
 python-dotenv==1.0.0
 sentence-transformers==3.3.1
+torch>=2.0.0
