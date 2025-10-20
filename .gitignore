@@ -2,7 +2,7 @@
 RAG_CONFIGURATION.md
 CLAUDE_MEMORY.md
 _RAG-explained.md
-chroma_db/
+# chroma_db/  # Commented out - we need this for deployment
 _README.md
 
 ## Helper scripts (optional) ##
