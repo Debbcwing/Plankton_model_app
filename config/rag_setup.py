@@ -10,7 +10,7 @@ Setup:
 import os
 from pathlib import Path
 from langchain_community.document_loaders import PyPDFLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Chroma
 from dotenv import load_dotenv
@@ -111,16 +111,21 @@ class RAGSystem:
             error_msg = str(e)
             print(f"❌ Error loading vector database: {error_msg}")
 
-            # Provide helpful error message
-            if "Embeddings" in error_msg or "empty" in error_msg.lower():
+            # Check for specific database errors
+            if "no such table" in error_msg.lower() or "acquire_write" in error_msg.lower():
+                raise ValueError(
+                    "Database error: ChromaDB version mismatch or corrupted database. "
+                    "Please rebuild by running: python rebuild_chroma_db.py"
+                )
+            elif "Embeddings" in error_msg or "empty" in error_msg.lower():
                 raise ValueError(
                     "Vector database is corrupted or empty. "
-                    "Please rebuild by running: python config/rag_setup.py"
+                    "Please rebuild by running: python rebuild_chroma_db.py"
                 )
             else:
                 raise ValueError(
                     f"Failed to load vector database: {error_msg}. "
-                    f"Try rebuilding with: python config/rag_setup.py"
+                    f"Try rebuilding with: python rebuild_chroma_db.py"
                 )
 
     def setup(self, force_rebuild=False):

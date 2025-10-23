@@ -140,8 +140,8 @@ if selected == sidebar_items[0]:
             # Lazy imports - only load when API key exists
             from config.rag_setup import RAGSystem
             from langchain_anthropic import ChatAnthropic
-            from langchain.chains.combine_documents import create_stuff_documents_chain
-            from langchain.chains import create_retrieval_chain
+            from langchain_classic.chains.combine_documents import create_stuff_documents_chain
+            from langchain_classic.chains import create_retrieval_chain
             from langchain_core.prompts import ChatPromptTemplate
 
             def load_rag_system():
