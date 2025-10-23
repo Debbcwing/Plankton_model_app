@@ -6,16 +6,15 @@ numpy==1.26.4
 seaborn==0.13.2
 pandas
 
-# RAG system dependencies
-langchain>=1.0.0
-langchain-core>=1.0.0
-langchain-community>=0.4.0
-langchain-anthropic>=1.0.0
-langchain-huggingface>=1.0.0
-langchain-classic>=1.0.0
-langchain-text-splitters>=1.0.0
+# RAG system dependencies - using stable versions for deployment
+langchain==0.3.14
+langchain-core==0.3.63
+langchain-community==0.3.14
+langchain-anthropic==0.3.3
+langchain-huggingface==0.1.2
+langchain-text-splitters==0.3.8
 chromadb==0.5.23
-pypdf>=5.0.0
-anthropic>=0.71.0
-python-dotenv>=1.0.0
-sentence-transformers>=3.0.0
+pypdf==5.1.0
+anthropic==0.42.0
+python-dotenv==1.0.0
+sentence-transformers==3.3.1
