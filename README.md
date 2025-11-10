@@ -19,17 +19,6 @@ This application provides an interactive interface to explore research on:
 - **📚 Publication Library**: Access peer-reviewed manuscripts from the PhD studies with downloadable PDFs
 - **🎨 Visual Storytelling**: Learn about phytoplankton ecology through infographics
 
-
-## 🤝 Contributing
-
-This is a research showcase project. If you find issues or have suggestions:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/improvement`)
-3. Commit your changes (`git commit -am 'Add new feature'`)
-4. Push to the branch (`git push origin feature/improvement`)
-5. Open a Pull Request
-
 ## 📝 License
 
 This project is open source and available under the [MIT License](LICENSE).
