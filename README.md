@@ -7,14 +7,14 @@ An interactive Streamlit web application showcasing PhD research on phytoplankto
 ## 📋 Overview
 
 This application provides an interactive interface to explore research on:
-- Size-based phytoplankton competition models
+- Size-based plankton ecosystem models
 - Grazing strategies and their impact on phytoplankton communities
 - Environmental factors influencing plankton population dynamics
 - Nutrient regimes and seasonal variations in lake ecosystems
 
 ### Key Features
 
-- **🤖 AI-Powered Q&A**: Ask questions about the research and get answers powered by RAG (Retrieval-Augmented Generation) using Claude AI
+- **🤖 AI-Powered Q&A**: Ask questions about the research and get answers powered by RAG (Retrieval-Augmented Generation)
 - **📊 Interactive Data Visualizations**: Explore model outputs and simulation results
 - **📚 Publication Library**: Access peer-reviewed manuscripts from the PhD studies with downloadable PDFs
 - **🎨 Visual Storytelling**: Learn about phytoplankton ecology through infographics
