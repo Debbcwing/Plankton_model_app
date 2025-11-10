@@ -866,7 +866,7 @@ if selected == sidebar_items[3]:
     #         "A simplified lake ecosystem"
     #     )
 
-    tab_names_model = ["Concepts", "Baseline", "Reaction", "Forecast"]
+    tab_names_model = ["Concepts", "Model Chart", "Model Response", "Forecast"]
     tab1, tab2, tab3, tab4 = st.tabs(tab_names_model)
 
     with tab1:
@@ -883,23 +883,33 @@ if selected == sidebar_items[3]:
         col1, col2, col3 = st.columns([1, 5, 1])
         with col2:
             st.image("lake-fig.webp", use_container_width=True)
-    
-    with tab2:
+        st.subheader("Size-based plankton communities")
         st.write(
-            "In working progress.."
+            "Phytoplankton and zooplankton communities consist of planktonic organisms in different sizes, some large and some small. "
+            "Each sizes have specific growth and grazing rates. Size also influence how easy one is being eaten or how fast one sinks to the bottom. "
+            "In the next page, you will see how plankton size classes determine their interactions with the environment and with each other in the model. "
         )
 
-    with tab3:
+    with tab2:
+        st.subheader("A classical NPZD model with multiple phytoplankton and zooplankton size classes")
         st.write(
-            "In working progress.."
+            ""
         )
+        col1, col2 = st.columns([5, 5])
+        with col1:
+            st.image("Model.webp", use_container_width=True)
+        #with col2:
+            
     
-    with tab4:
+    with tab3:              # Model response - to different parameters
         st.write(
             "In working progress.."
         )    
 
-
+    with tab4:              # Forecast - to different environmental values
+        st.write(
+            "In working progress.."
+        )
 
 
 # ---------------------- Planktoomics ----------------------
