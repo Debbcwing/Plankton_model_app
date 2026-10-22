@@ -59,7 +59,7 @@ st.sidebar.markdown("---")  # horizontal line
 with st.sidebar.expander("More about this app ℹ️"):
     st.write(
         "This is a scientific dashboard to showcase the results of my PhD research "
-        "in ecological modeling. The dashboard aims to make complex graphs more "
+        "in plankton modeling. The dashboard aims to make complex graphs more "
         "accessible to a broader audience.",
         styles={""}
         )
@@ -70,7 +70,7 @@ with st.sidebar.expander("More about Debbie 🇭🇰"):
         - Nature lover
         - Data storyteller
         - Model enthusiast
-        - Modeling plankton
+        - Plankton modeler
         """,
         styles={""})
         st.write(
@@ -274,7 +274,7 @@ if selected == sidebar_items[1]:
     st.title("📚 Publications")
     st.write("Explore my peer-reviewed research on phytoplankton size structure and community dynamics in lake ecosystems.")
 
-    tab_names_ms = ["Manuscript 1 (2024)", "Manuscript 2 (2025)", "Manuscript 3 (Under Review)"]
+    tab_names_ms = ["Manuscript 1 (2024)", "Manuscript 2 (2025)", "Manuscript 3 (2026)"]
     tab1, tab2, tab3 = st.tabs(tab_names_ms)
 
     # ========== Manuscript 1 (2024) ==========
@@ -283,7 +283,7 @@ if selected == sidebar_items[1]:
 
         with col1:
             st.subheader("Grazing strategies determine the size composition of phytoplankton in eutrophic lakes")
-            st.markdown("**Authors:** Sze-Wing To, "
+            st.markdown("**Authors:** [Sze-Wing To](https://www.hereon.de/institutes/coastal_systems_analysis_modeling/ecosystem_modelling/team/119888/index.php.en), "
                         "[Esteban Acevedo-Trejos](https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/esteban-acevedo-trejos-en.html), "
                         "[Subhendu Chakraborty](https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/subhendu-chakraborty.html), "
                         "[Francesco Pomati](https://www.eawag.ch/en/about-us/portrait/organisation/staff/profile/francesco-pomati/show/), "
@@ -339,14 +339,14 @@ if selected == sidebar_items[1]:
 
         with col1:
             st.subheader("Ecological and environmental factors influencing exclusion patterns of phytoplankton size classes in lake systems")
-            st.markdown("**Authors:** Sze-Wing To, "
+            st.markdown("**Authors:** [Sze-Wing To](https://www.hereon.de/institutes/coastal_systems_analysis_modeling/ecosystem_modelling/team/119888/index.php.en), "
                         "[Esteban Acevedo-Trejos](https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/esteban-acevedo-trejos-en.html), "
                         "[Sherwood Lan Smith](https://wpi-aimec.jp/en/member/Smith-SherwoodLan.html), "
                         "[Subhendu Chakraborty](https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/subhendu-chakraborty.html), "
                         "[Francesco Pomati](https://www.eawag.ch/en/about-us/portrait/organisation/staff/profile/francesco-pomati/show/), "
                         "[Agostino Merico](https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/agostino-merico.html)")            
-            st.markdown("**Journal:** *Ecological Modelling*, 499:110936 (2025)")
-            st.markdown("**DOI:** [10.1016/j.ecolmodel.2024.110936](https://doi.org/10.1016/j.ecolmodel.2024.110936)")
+            st.markdown("**Journal:** *Ecological Complexity*, 61 (2025)")
+            st.markdown("**DOI:** [10.1016/j.ecocom.2024.101115](https://doi.org/10.1016/j.ecocom.2024.101115)")
 
         with col2:
             with open("MS/To et al. (2025).pdf", "rb") as f:
@@ -389,27 +389,67 @@ if selected == sidebar_items[1]:
         - Framework helps explain the "paradox of the plankton" through quantitative modeling
         """)
 
-    # ========== Manuscript 3 (Under Review) ========== 
+    # ========== Manuscript 3 (2026) ========== 
     with tab3:
         col1, col2 = st.columns([2, 1])
 
         with col1:
-            st.subheader("*Under Review* - Future inorganic nutrient and plankton dynamics in a temperate lake")
-            st.markdown("**Journal:** *Limnology and Oceanography*")
-            st.markdown("**Status:** 🔄 Final review")
+            st.subheader("Future warming reshapes inorganic nutrient and plankton dynamics in a temperate lake")
+            st.markdown("**Authors:** [Sze-Wing To](https://www.hereon.de/institutes/coastal_systems_analysis_modeling/ecosystem_modelling/team/119888/index.php.en), "
+                        "[Subhendu Chakraborty](https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/subhendu-chakraborty.html), "
+                        "[Esteban Acevedo-Trejos](https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/esteban-acevedo-trejos-en.html), "
+                        "[Francesco Pomati](https://www.eawag.ch/en/about-us/portrait/organisation/staff/profile/francesco-pomati/show/), "
+                        "[Agostino Merico](https://www.leibniz-zmt.de/en/marine-tropics-research/who-we-are/agostino-merico.html)")            
+            st.markdown("**Journal:** *Limnology and Oceanography*, 71:70447 (2026)")
+            st.markdown("**DOI:** [10.1002/lno.70447](https://doi.org/10.1002/lno.70447)")
+
+        with col2:
+            with open("MS/To et al. (2026).pdf", "rb") as f:
+                st.download_button(
+                    label="📄 Download PDF",
+                    data=f,
+                    file_name="To_et_al_2026.pdf",
+                    mime="application/pdf"
+                )
+            with open("MS/To et al. (2026)supp.pdf", "rb") as f:
+                st.download_button(
+                    label="📊 Supplementary Material",
+                    data=f,
+                    file_name="To_et_al_2026_supplement.pdf",
+                    mime="application/pdf"
+                )
 
         st.markdown("---")
 
-        st.warning("📋 **Status Update**")
-        st.write("""
-        This manuscript is currently under final review at *Limnology and Oceanography*.
-        Details will be available upon publication.
-        """)
+        # Abstract
+        with st.expander("📖 Abstract", expanded=True):
+            st.write("""
+            Lakes are experiencing high temperatures and frequent phytoplankton blooms. These events threaten the
+            health of lake ecosystems. Phytoplankton respond to lake warming in various ways, making it challenging to
+            predict changes in community composition. Although understanding the effects of lake warming on phyto-
+            plankton communities is crucial for lake management, these effects are not clear and have been a matter of
+            debate due to contrasting observations. Here we use a data-informed, trait-based model to disentangle and pro-
+            ject, based on future warming scenarios, the effects of temperature on the dynamics of inorganic nutrient (phos-
+            phate) and plankton at Greifensee, a medium-size eutrophic lake near Zurich, Switzerland. Assuming identical
+            thermal characteristics among phytoplankton size classes, we ﬁnd that phosphate concentrations and phyto-
+            plankton mean cell size increase with rising lake temperature. This is driven by the interplay between reduced
+            growth and nutrient uptake by all phytoplankton under sub-optimal temperatures, resulting in higher summer
+            nutrients and intensiﬁed zooplankton grazing on smaller phytoplankton cells. The small phytoplankton cells
+            typically occurring during winter and spring are replaced by large phytoplankton cells. In addition, peaks of
+            phytoplankton biomass, typically occurring in early summer, emerge earlier, in early spring. The earlier occur-
+            rence of these peaks is caused by a shift in the optimal temperature for phytoplankton growth. Although our
+            results are based on various modeling approximations, they highlight the importance of combining observa-
+            tions and trait-based modeling for gaining insights into the future compositions of lake phytoplankton and
+            establish a foundation for examining lake ecosystems in a warming world.
+            """)
 
-        st.info("💡 **Research Focus**")
-        st.write("""
-        This work builds on the previous two manuscripts to explore how climate change and environmental
-        stressors might affect phytoplankton community structure in future lake ecosystems.
+        # Key Findings
+        st.info("🎯 **Key Findings**")
+        st.markdown("""
+        - **Competitive exclusion patterns** are shaped by the interplay of nutrient regimes and grazing strategies
+        - **Size-based trade-offs** create niches that allow for phytoplankton coexistence
+        - **Environmental variability** (mixing, seasonality) promotes diversity by preventing competitive exclusion
+        - Framework helps explain the "paradox of the plankton" through quantitative modeling
         """)
 
 

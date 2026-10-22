@@ -26,8 +26,8 @@ This project is open source and available under the [MIT License](LICENSE).
 ## 👤 Author
 
 **Sze-Wing To**
-- Research Focus: Plankton ecology and lake ecosystem modeling
-- Affiliation: Constructor University Alumni & Constructor Academy
+- Research Focus: Plankton ecology and ecosystem modeling
+- Affiliation: Constructor University Alumni & Helmholtz-Zentrum Hereon
 
 ## 📧 Contact
 
@@ -63,6 +63,16 @@ If you use this work in your research, please cite:
   pages={110936},
   year={2025},
   doi={10.1016/j.ecolmodel.2024.110936}
+}
+
+@article{to2026warming,
+  title={Future warming reshapes inorganic nutrient and plankton dynamics in a temperate lake},
+  author={To, Sze-Wing and Chakraborty, Subhendu and Acevedo-Trejos, Esteban and Pomati, Francesco and and Merico, Agostino},
+  journal={Limnology and Oceanography},
+  volume={71},
+  pages={70447},
+  year={2026},
+  doi={10.1002/lno.70447}
 }
 ```
 
