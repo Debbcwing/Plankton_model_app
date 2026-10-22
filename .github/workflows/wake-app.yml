@@ -1,0 +1,16 @@
+name: Wake Streamlit App
+
+on:
+  schedule:
+    # Runs 4 times daily at 8:00, 11:00, 14:00, 17:00 UTC
+    - cron: '0 8,11,14,17 * * *'
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  wake:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Streamlit App
+        run: |
+          curl -s -o /dev/null -w "%{http_code}" https://lake-plankton.streamlit.app/ || true
+          echo "App pinged successfully"
