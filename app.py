@@ -60,8 +60,7 @@ with st.sidebar.expander("More about this app ℹ️"):
     st.write(
         "This is a scientific dashboard to showcase the results of my PhD research "
         "in plankton modeling. The dashboard aims to make complex graphs more "
-        "accessible to a broader audience.",
-        styles={""}
+        "accessible to a broader audience."
         )
 # My info
 with st.sidebar.expander("More about Debbie 🇭🇰"):
@@ -71,14 +70,11 @@ with st.sidebar.expander("More about Debbie 🇭🇰"):
         - Data storyteller
         - Model enthusiast
         - Plankton modeler
-        """,
-        styles={""})
+        """)
         st.write(
-            "**I am fascinated not just by models but also the stories data tell.**",
-        styles={""})
+            "**I am fascinated not just by models but also the stories data tell.**")
         st.write(
-            "**While models themselves can be complex, their output can be distilled into insightful patterns!**",
-        styles={""})
+            "**While models themselves can be complex, their output can be distilled into insightful patterns!**")
 
 
 # connect
@@ -164,7 +160,9 @@ if selected == sidebar_items[0]:
                 )
 
                 # Load custom prompt template from file
-                with open("config/prompt_template.txt", "r") as f:
+                import pathlib
+                template_path = pathlib.Path(__file__).parent / "config" / "prompt_template.txt"
+                with open(template_path, "r") as f:
                     prompt_template = f.read()
 
                 # Create prompt using ChatPromptTemplate

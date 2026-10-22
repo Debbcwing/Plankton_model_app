@@ -61,6 +61,6 @@ Remember: 80-100 words, use analogies, be enthusiastic, make it simple!
 Context from research documents:
 {context}
 
-Question: {question}
+Question: {input}
 
 Your answer (80-100 words, matching the example style exactly):

@@ -22,7 +22,7 @@ load_dotenv()
 class RAGSystem:
     """RAG system for querying PhD research documents."""
 
-    def __init__(self, data_folder="data", persist_directory="chroma_db"):
+    def __init__(self, data_folder="MS", persist_directory="chroma_db"):
         self.data_folder = data_folder
         self.persist_directory = persist_directory
         self.embeddings = None
@@ -44,6 +44,9 @@ class RAGSystem:
         pdf_files = list(Path(self.data_folder).glob("*.pdf"))
 
         print(f"Found {len(pdf_files)} PDF files to process...")
+
+        if len(pdf_files) == 0:
+            raise ValueError(f"No PDF files found in '{self.data_folder}/' folder.")
 
         for pdf_path in pdf_files:
             print(f"Processing: {pdf_path.name}")
@@ -101,9 +104,10 @@ class RAGSystem:
 
                 print(f"✓ Loaded vector database with {doc_count} documents")
 
+            except ValueError:
+                raise  # Re-raise empty database errors
             except Exception as e:
                 print(f"Warning: Could not validate database content: {e}")
-                # Continue anyway - let it fail later if truly broken
 
             return self.vectorstore
 
